@@ -1,11 +1,26 @@
 package com.example.bean;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 public class Message implements Serializable {
+
+    @JsonProperty("MD5Password")
     private String MD5Password;
+
+    @JsonProperty("workerNum")
     private Integer workerNum;
+
+    public Message() {
+
+    }
+
+    public Message(String MD5Password, Integer workerNum) {
+        this.MD5Password = MD5Password;
+        this.workerNum = workerNum;
+    }
 
     public String getMD5Password() {
         return MD5Password;
