@@ -5,13 +5,17 @@ exports.getPosts = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
-    const title = req.body.title;
-    const content = req.body.content;
+    const md5 = req.body.MD5Password;
+    const numOfWorkers = req.body.numOfWorkers;
 
     // Create post in db
-    res.status(201).json({
-        message: 'Post created successfully!',
-        post: {id: new Date().toISOString(), title: title, content: content}
+    res.status(200).json({
+      message: "Post created successfully!",
+      post: {
+        id: new Date().toISOString(),
+        md5: md5,
+        numOfWorkers: numOfWorkers,
+      },
     });
 }
 
