@@ -8,8 +8,7 @@ public class Dispatcher {
      *      "eeeee" ~ "jjjjj"
      *      "jjjjj" ~ "ooooo"
      *      "ooooo" ~ "ttttt"
-     *      "ttttt" ~ "yyyyy"
-     *      "yyyyy" ~ "zzzzz"
+     *      "ttttt" ~ "zzzzz"
      * 返回的数据结构自选
      */
     public String[][] getJobList(int numOfWorkers) {
@@ -17,7 +16,6 @@ public class Dispatcher {
         return null;
     }
 
-    
     public static void main(String[] args) {
         Dispatcher dispatcher = new Dispatcher();
         int numOfWorkers = 10;
