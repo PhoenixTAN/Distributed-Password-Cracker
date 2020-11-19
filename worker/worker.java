@@ -19,7 +19,7 @@ public class Worker {
      * @param{String} md5: the md5 of the correct password.
      * @return{String} the correct password or null.
      */
-    private final int BASE = 26;
+    private final int BASE = 52;
 
     public String bruteForcingPassword(String start, String end, String md5) {
         try {
@@ -36,30 +36,28 @@ public class Worker {
     }
     // TODO: function increment is the same in dispatcher and worker. get rid of one.
     public String increment(String s, int step) {
-        // TODO: wrap around zzzzz to AAAAA
-        // check remaining distance from s to zzzzz and update step if step is larger
-        // start from AAAAA and use new step
-        char baseChar = 'a';
-        if (Character.isUpperCase(s.charAt(0))) {
-            baseChar = 'A';
-        }
+        String allChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         char[] chars = new char[5];
         if (s.length() != 5) return "";
         int position = 0;
         for (int i = 0; i < s.length(); i++) {
             int charIdx = 5 - 1 - i;
-            position += Math.pow(BASE, i) * (s.charAt(charIdx) - baseChar);
+            // System.out.println(allChars.indexOf(s.charAt(charIdx)));
+            position += Math.pow(BASE, i) * (allChars.indexOf(s.charAt(charIdx)));
+            // System.out.println("position: " + position);
         }
         position += step;
         for (int i = 0; i < s.length(); i++) {
             int charIdx = 5 - 1 - i;
             // System.out.println("number: " + position % BASE);
-            chars[charIdx] = (char) (baseChar + position % BASE);
+            chars[charIdx] = allChars.charAt(position % BASE);
+
             position /= BASE;
             // System.out.println(chars);
             // System.out.println("position: " + position);
 
         }
+        System.out.println(chars);
         return String.valueOf(chars);
     }
 

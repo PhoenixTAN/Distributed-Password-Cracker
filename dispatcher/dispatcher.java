@@ -20,7 +20,7 @@ public class Dispatcher {
      */
     public ArrayList<Job> getJobList(int numOfWorkers) {
         ArrayList<Job> jobList = new ArrayList<Job>();
-        int total = (int) Math.pow(26, 5);
+        int total = (int) Math.pow(52, 5);
         int workload = total / numOfWorkers;
         String start = "aaaaa";
         for (int i = 0; i < numOfWorkers - 1; i++) {
@@ -28,7 +28,7 @@ public class Dispatcher {
             jobList.add(p);
             start = increment(start, workload);
         }
-        jobList.add(new Job(start, "zzzzz"));
+        jobList.add(new Job(start, "ZZZZZ"));
         return jobList;
     }
     private Job getJobFrom(String start, int workload) {
@@ -37,30 +37,28 @@ public class Dispatcher {
     }
 
     public String increment(String s, int step) {
-        // TODO: wrap around zzzzz to AAAAA
-        // check remaining distance from s to zzzzz and update step if step is larger
-        // start from AAAAA and use new step
-        char baseChar = 'a';
-        if (Character.isUpperCase(s.charAt(0))) {
-            baseChar = 'A';
-        }
+        String allChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         char[] chars = new char[5];
         if (s.length() != 5) return "";
         int position = 0;
         for (int i = 0; i < s.length(); i++) {
             int charIdx = 5 - 1 - i;
-            position += Math.pow(BASE, i) * (s.charAt(charIdx) - baseChar);
+            // System.out.println(allChars.indexOf(s.charAt(charIdx)));
+            position += Math.pow(BASE, i) * (allChars.indexOf(s.charAt(charIdx)));
+            // System.out.println("position: " + position);
         }
         position += step;
         for (int i = 0; i < s.length(); i++) {
             int charIdx = 5 - 1 - i;
             // System.out.println("number: " + position % BASE);
-            chars[charIdx] = (char) (baseChar + position % BASE);
+            chars[charIdx] = allChars.charAt(position % BASE);
+
             position /= BASE;
             // System.out.println(chars);
             // System.out.println("position: " + position);
 
         }
+        System.out.println(chars);
         return String.valueOf(chars);
     }
 
