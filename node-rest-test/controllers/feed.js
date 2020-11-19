@@ -6,7 +6,7 @@ exports.getPosts = (req, res, next) => {
 
 exports.createPost = (req, res, next) => {
     const md5 = req.body.MD5Password;
-    const numOfWorkers = req.body.numOfWorkers;
+    const workerNum = req.body.workerNum;
 
     // Create post in db
     res.status(200).json({
@@ -14,7 +14,7 @@ exports.createPost = (req, res, next) => {
       post: {
         id: new Date().toISOString(),
         md5: md5,
-        numOfWorkers: numOfWorkers,
+        workerNum: workerNum,
       },
     });
 }
