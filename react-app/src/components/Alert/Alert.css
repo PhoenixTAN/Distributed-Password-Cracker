@@ -1,0 +1,30 @@
+.alert {
+  height: 25px;
+  line-height: 25px;
+  padding: 3px 10px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+
+  border-radius: 3px;
+
+  animation-duration: 3s;
+  animation-name: popup;
+  animation-iteration-count: 1;
+}
+
+@keyframes popup {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

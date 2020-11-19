@@ -1,0 +1,30 @@
+.collaboration {
+  display: flex;
+  justify-content: center;
+
+  max-width: 600px;
+  min-width: 300px;
+  width: 70vw;
+  margin: 30px auto;
+  padding: 20px 0;
+
+  background-color: #F6F8FA;
+  border: 1px solid #eaecef;
+  border-radius: 10px;
+}
+
+table {
+  font-size: 14px;
+  width: 100%;
+  margin: 0 40px;
+}
+
+th {
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  box-sizing: border-box;
+  padding: 2px;
+}
