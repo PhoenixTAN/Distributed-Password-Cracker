@@ -1,0 +1,34 @@
+packet.json加上  "homepage": ".",
+
+npm run build
+
+scp -i .\id_geni_ssh_rsa -r D:\Distributed-Password-Cracker\react-app\build\* ziqi1756@pcvm3-7.instageni.colorado.edu:/users/ziqi1756/reactapp
+
+sudo cp -r ./* /var/www/html
+
+sudo apt-get update
+sudo apt install nginx-full
+
+sudo chmod 777 nginx.conf
+
+vim /etc/nginx/nginx.conf
+
+http{
+    # 其他代码（原来就存在的代码）
+    server {
+        listen 80;
+    
+        location / { 
+            root /var/www/html; 
+            index index.html index.htm;
+        }
+    }
+}
+
+# configuration file syntax
+sudo nginx -t  
+
+sudo service nginx start
+
+sudo systemctl status nginx
+

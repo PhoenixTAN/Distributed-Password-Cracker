@@ -57,6 +57,7 @@ const Cracker = () => {
       }
       setPasswordTips("");
       md5Ref.current.value = CryptoJS.MD5(password).toString();
+      setMd5Tips("");
     }
   };
 
