@@ -2,6 +2,7 @@
 import java.security.MessageDigest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
+
 /**
  * @Author: Jingzhou Xue
  */
@@ -11,7 +12,7 @@ public class Worker {
      * @description: 
      *      Brute force to get the password. 
      *      If the password is not in range [start, end], return null.
-     *      For example, start is "aaaaa", end is "ddddd" and md5 is "nvoahufbqwlbuousdhfbla".
+     *      For example, start is "aaaaa", end is "ddddd" and md5 is "ab56b4d92b40713acc5af89985d4b786".
      *      Then calculate the md5 (denoted as res) of "aaaaa", "aaaab", "aaaac", ... , "aaaba", ... , "ddddd". 
      *      If one of the res is the same as md5, that string should be returned.
      * @param{String} start: the start string.
@@ -19,9 +20,14 @@ public class Worker {
      * @param{String} md5: the md5 of the correct password.
      * @return{String} the correct password or null.
      */
+    
     private final int BASE = 52;
+    private final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public String bruteForcingPassword(String start, String end, String md5) {
+
+        md5 = md5.toUpperCase();
+
         try {
             while(!start.equals(end)) {
                 if (encrypt(start).equals(md5)) {
@@ -29,35 +35,34 @@ public class Worker {
                 }
                 start = increment(start, 1);
             }
-        } catch (NoSuchAlgorithmException nsae) {
 
+            // edge case
+            if (encrypt(start).equals(md5)) {
+                return start;
+            }
+
+        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+            System.out.println(noSuchAlgorithmException);
         }
-        return "";
+
+        return null;
     }
+
     // TODO: function increment is the same in dispatcher and worker. get rid of one.
     public String increment(String s, int step) {
-        String allChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         char[] chars = new char[5];
         if (s.length() != 5) return "";
         int position = 0;
         for (int i = 0; i < s.length(); i++) {
             int charIdx = 5 - 1 - i;
-            // System.out.println(allChars.indexOf(s.charAt(charIdx)));
-            position += Math.pow(BASE, i) * (allChars.indexOf(s.charAt(charIdx)));
-            // System.out.println("position: " + position);
+            position += Math.pow(BASE, i) * (ALL_CHARS.indexOf(s.charAt(charIdx)));
         }
         position += step;
         for (int i = 0; i < s.length(); i++) {
             int charIdx = 5 - 1 - i;
-            // System.out.println("number: " + position % BASE);
-            chars[charIdx] = allChars.charAt(position % BASE);
-
+            chars[charIdx] = ALL_CHARS.charAt(position % BASE);
             position /= BASE;
-            // System.out.println(chars);
-            // System.out.println("position: " + position);
-
         }
-        System.out.println(chars);
         return String.valueOf(chars);
     }
 
@@ -70,11 +75,59 @@ public class Worker {
     }
 
     public static void main(String[] args) {
+        Date day = new Date();
         Worker worker = new Worker();
-        // TODO: get start, end, and md5
-        String start, end, md5 = "";
-        String password = worker.bruteForcingPassword(start, end, md5);
-        System.out.println(password);
-    }
+        String start = null;
+        String end = null;
+        String md5 = null;
+        String expectedPassword = null;
+        String password = null;
 
+        // test case 1
+        start = "aaaaa";
+        end = "abddd";
+        md5 = "ab56b4d92b40713acc5af89985d4b786";
+        expectedPassword = "abcde";
+
+        password = worker.bruteForcingPassword(start, end, md5);
+        System.out.println(password + " " + (expectedPassword.equals(password)));
+
+        // test case 2
+        start = "aaaaa";
+        end = "ddddd";
+        md5 = "8f7aeea0fc2138f306aa14308099dd25";
+        expectedPassword = "dbcde";
+
+        password = worker.bruteForcingPassword(start, end, md5);
+        System.out.println(password + " " + (expectedPassword.equals(password)));
+
+        // test case 3
+        start = "aaaaa";
+        end = "ccccc";
+        md5 = "67c762276bced09ee4df0ed537d164ea";
+        expectedPassword = "ccccc";
+
+        password = worker.bruteForcingPassword(start, end, md5);
+        System.out.println(password + " " + (expectedPassword.equals(password)));
+
+        // test case 4
+        // this may takes 2 minutes
+        start = "aaaaa";
+        end = "ZZZZZ";
+        md5 = "37e464916dcb6dfc3994ca4549e97272";
+        expectedPassword = "AbCdE";
+
+        password = worker.bruteForcingPassword(start, end, md5);
+        System.out.println(password + " " + (expectedPassword.equals(password)));
+
+        // test case 5
+        // this may take 5 minutes
+        start = "aaaaa";
+        end = "ZZZZZ";
+        md5 = "3c255c428815c9a56bcef2f707a9014b";
+        expectedPassword = "Zzzzz";
+
+        password = worker.bruteForcingPassword(start, end, md5);
+        System.out.println(password + " " + (expectedPassword.equals(password)));
+    }
 }

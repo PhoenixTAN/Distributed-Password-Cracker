@@ -7,5 +7,9 @@ The web interface with the help of worker nodes cracks the password by a brute f
 
 Skills: CGI-bin, socket programming.
 
+## Performance
+1. How many requests are handled per second?
+2. How long does it take to handle one request using different number of workers?
+
 
 

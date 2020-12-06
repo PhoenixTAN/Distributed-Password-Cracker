@@ -1,4 +1,7 @@
 /bin/
 .idea
+*.iml
 .project
 .classpath
+*.class
+.vscode
