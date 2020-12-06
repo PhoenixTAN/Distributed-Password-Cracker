@@ -10,6 +10,7 @@ public class Worker {
 
     private final int BASE = 52;
     private final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private final int LENGTH_OF_PASSWORD = 5;
 
     /**
      * @description: 
@@ -57,19 +58,28 @@ public class Worker {
      * @return the next string.
      */
     private String increment(String s, int step) {
-        char[] chars = new char[5];
-        if (s.length() != 5) return "";
+
+        if (s.length() != LENGTH_OF_PASSWORD) {
+            return "";
+        }
+
+        char[] chars = new char[LENGTH_OF_PASSWORD];
+        
         int position = 0;
+
         for (int i = 0; i < s.length(); i++) {
-            int charIdx = 5 - 1 - i;
+            int charIdx = LENGTH_OF_PASSWORD - 1 - i;
             position += Math.pow(BASE, i) * (ALL_CHARS.indexOf(s.charAt(charIdx)));
         }
+
         position += step;
+
         for (int i = 0; i < s.length(); i++) {
-            int charIdx = 5 - 1 - i;
+            int charIdx = LENGTH_OF_PASSWORD - 1 - i;
             chars[charIdx] = ALL_CHARS.charAt(position % BASE);
             position /= BASE;
         }
+        
         return String.valueOf(chars);
     }
 
