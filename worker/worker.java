@@ -8,6 +8,9 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Worker {
 
+    private final int BASE = 52;
+    private final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     /**
      * @description: 
      *      Brute force to get the password. 
@@ -20,10 +23,6 @@ public class Worker {
      * @param{String} md5: the md5 of the correct password.
      * @return{String} the correct password or null.
      */
-    
-    private final int BASE = 52;
-    private final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
     public String bruteForcingPassword(String start, String end, String md5) {
 
         md5 = md5.toUpperCase();
@@ -48,8 +47,16 @@ public class Worker {
         return null;
     }
 
-    // TODO: function increment is the same in dispatcher and worker. get rid of one.
-    public String increment(String s, int step) {
+    /**
+     * @description: get the next string.
+     *      For example, if s is "aaaaa" and step is 1, we return "aaaab".
+     *      If s is "ccccc" and step is 2, we return "cccce".
+     *      If s is "zzzzz" and step is 1, we return "Aaaaa".
+     * @param{String}: s
+     * @param{int}: step
+     * @return the next string.
+     */
+    private String increment(String s, int step) {
         char[] chars = new char[5];
         if (s.length() != 5) return "";
         int position = 0;
@@ -66,6 +73,9 @@ public class Worker {
         return String.valueOf(chars);
     }
 
+    /**
+     * get md5 of a string
+     */
     private String encrypt(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
