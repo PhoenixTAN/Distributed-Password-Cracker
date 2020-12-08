@@ -9,6 +9,7 @@ import java.util.Map;
 
 @RestController
 public class MessageController {
+
     @PostMapping(value = "/decryptPassword")
     public String decryptPassword(@RequestBody Map<String, String> map){
         String MD5 = map.get("password");
@@ -23,7 +24,7 @@ public class MessageController {
 
         password = worker.bruteForcingPassword(start, end, MD5);
 
-        System.out.println(password);
+        // System.out.println(password);
         return password;
     }
 }

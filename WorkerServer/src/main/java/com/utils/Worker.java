@@ -4,6 +4,7 @@ package com.utils;
 import java.security.MessageDigest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 /**
  * @Author: Jingzhou Xue
@@ -13,6 +14,7 @@ public class Worker {
     private final int BASE = 52;
     private final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final int LENGTH_OF_PASSWORD = 5;
+
 
     /**
      * @description:
@@ -97,7 +99,9 @@ public class Worker {
     }
 
     public static void main(String[] args) {
+        /*
         Worker worker = new Worker();
+
         String start = null;
         String end = null;
         String md5 = null;
@@ -150,5 +154,6 @@ public class Worker {
 
         password = worker.bruteForcingPassword(start, end, md5);
         System.out.println(password + " " + (expectedPassword.equals(password)));
+        */
     }
 }

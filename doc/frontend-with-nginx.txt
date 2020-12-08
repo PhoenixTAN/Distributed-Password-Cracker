@@ -1,4 +1,4 @@
-packet.json加上  "homepage": ".",
+packet.json add  "homepage": ".",
 
 npm run build
 
@@ -14,7 +14,7 @@ sudo chmod 777 nginx.conf
 vim /etc/nginx/nginx.conf
 
 http{
-    # 其他代码（原来就存在的代码）
+    # other code
     server {
         listen 80;
     
