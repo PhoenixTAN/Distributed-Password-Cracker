@@ -13,7 +13,7 @@ const Cracker = () => {
   const MD5_LENGTH = 32;
   const MANAGEMENT_SERVER_URL = "http://192.86.139.65:8080/getPassword";
   const REQUEST_DELAY = 1500; // ms
-  const REQUEST_TIMEOUT = 10000; // ms
+  const REQUEST_TIMEOUT = 90000; // ms
 
   const [showAlert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -120,7 +120,9 @@ const Cracker = () => {
 
     if (numOfWorkers !== DEFAULT_NUM_OF_WORKERS) {
       setNumOfWorkersTips(
-        "Warning! We strongly suggest using " + DEFAULT_NUM_OF_WORKERS + " workers."
+        "Warning! We strongly suggest using " +
+          DEFAULT_NUM_OF_WORKERS +
+          " workers."
       );
       return;
     }
@@ -138,7 +140,6 @@ const Cracker = () => {
     if (
       passwordTips.length !== 0 ||
       md5Tips.length !== 0 ||
-      numOfWorkersTips.length !== 0 ||
       md5Ref.current.value.length === 0 ||
       numOfWorkersRef.current.value.length === 0
     ) {
@@ -152,6 +153,9 @@ const Cracker = () => {
 
     // disable the crack button
     setDisableCracker(true);
+    
+    // clear the correct password field
+    setCorrectPassword("");
 
     // request timeout
     const requestTimeout = setTimeout(() => {
@@ -160,12 +164,12 @@ const Cracker = () => {
 
     // send post request
     setStatus("Request has been sent.");
-    
+
     const body = {
       MD5Password: md5Ref.current.value,
       workerNum: DEFAULT_NUM_OF_WORKERS,
     };
-    console.log(body);
+    // console.log(body);
     Axios.post(MANAGEMENT_SERVER_URL, body)
       .then((res) => {
         console.log(res);
@@ -208,7 +212,10 @@ const Cracker = () => {
           />
           <div className="tips">{md5Tips}</div>
 
-          <label>Number of workers (Required, max: {MAX_NUM_OF_WORKERS})</label>
+          <label>
+            Number of workers (Required, max: {MAX_NUM_OF_WORKERS}, default:{" "}
+            {DEFAULT_NUM_OF_WORKERS})
+          </label>
           <input
             ref={numOfWorkersRef}
             onChange={(event) => numOfWorkersOnChange(event)}
@@ -219,6 +226,9 @@ const Cracker = () => {
 
         <div className="result">
           <div>It may take 1 minute.</div>
+          <div>
+            If you feel it is to slow, refresh the page and try something else.
+          </div>
           <div>Status: {status}</div>
           <div>The password behind md5: {correctPassword}</div>
         </div>
