@@ -134,6 +134,9 @@ const Cracker = () => {
     passwordRef.current.value = "";
     md5Ref.current.value = "";
     numOfWorkersRef.current.value = "";
+
+    // enable the crack button
+    setDisableCracker(false);
   };
 
   const onProceedCrack = () => {
@@ -227,7 +230,7 @@ const Cracker = () => {
         <div className="result">
           <div>It may take 1 minute.</div>
           <div>
-            If you feel it is to slow, refresh the page and try something else.
+            If you feel it is too slow, refresh the page and try something else.
           </div>
           <div>Status: {status}</div>
           <div>The password behind md5: {correctPassword}</div>

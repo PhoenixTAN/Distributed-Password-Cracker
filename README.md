@@ -7,9 +7,20 @@ The web interface with the help of worker nodes cracks the password by a brute f
 
 Skills: CGI-bin, socket programming.
 
-## Performance
-1. How many requests are handled per second?
-2. How long does it take to handle one request using different number of workers?
+## File structures
+- ManagementServer: spring boot project of the management server.
+- WorkerServer: spring boot project of the worker nodes.
+- dispatcher: java code to dispatch jobs to different workers according to the input number of workers.
+- doc
+    - Proposal.
+    - Project ideas.
+    - Report instructions.
+    - Project report.
+- geni-rspec
+    
+
+## How to run this program?
+
 
 
 
