@@ -8,7 +8,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <header>CS 655 Final Project -- Password Cracker</header>
+      <header>CS 655 Final Project -- Improved Password Cracker</header>
 
       <Collaboration/>
 

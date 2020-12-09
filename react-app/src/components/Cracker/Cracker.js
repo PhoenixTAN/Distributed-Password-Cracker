@@ -205,11 +205,14 @@ const Cracker = () => {
             ref={numOfWorkersRef}
             onChange={(event) => numOfWorkersOnChange(event)}
             spellCheck="false"
+            readonly
+            value={MAX_NUM_OF_WORKERS}
           />
           <div className="tips">{numOfWorkersTips}</div>
         </div>
 
         <div className="result">
+          <div>It may take 1 minute.</div>
           <div>Status: {status}</div>
           <div>The password behind md5: {correctPassword}</div>
         </div>

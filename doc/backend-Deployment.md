@@ -13,4 +13,8 @@ openjdk version "1.8.0_275"
 OpenJDK Runtime Environment (build 1.8.0_275-8u275-b01-0ubuntu1~18.04-b01)
 OpenJDK 64-Bit Server VM (build 25.275-b01, mixed mode)
 ```
-4. 
+
+1. Add `<packaging>jar</packaging>` into pom.xml.
+2. Run `mvn clean package`.
+3. Run `3. java -jar management-server-v1.jar -Dspring.config.location=application.properties`.
+4. nohup to make the program run in backend.
