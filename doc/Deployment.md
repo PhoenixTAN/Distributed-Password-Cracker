@@ -1,6 +1,6 @@
 1.Update apt-get.
 ``` 
-sudo apt-get update
+$ sudo apt-get update
 ```
 2. Install Java 1.8.
 ```

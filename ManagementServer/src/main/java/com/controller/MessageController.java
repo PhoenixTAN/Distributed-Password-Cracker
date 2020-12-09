@@ -3,6 +3,7 @@ package com.controller;
 
 import com.bean.Job;
 import com.bean.Message;
+import com.utils.Cache;
 import com.utils.Dispatcher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -21,14 +23,26 @@ public class MessageController {
 
     @Value("#{'${list}'.split(',')}")
     private List<String> ips;
+    private static ConcurrentHashMap<String, String> notebook = Cache.getInstance().getNoteBook();
 
-//    @Value("${verbose}")
-//    private String verbose;
-
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/getPassword",  consumes = "application/json")
     public String getPassword(@RequestBody Message message) throws ExecutionException, InterruptedException {
 
         Integer numOfWorkers = message.getWorkerNum();
+        final String MD5 = message.getMD5Password().toUpperCase();
+        String hit = notebook.getOrDefault(MD5, "");
+
+        if ( hit.length() > 0 ) {
+            System.out.println("hit");
+            System.out.println("Returning password: " + hit);
+            return hit;
+        }
+
+        if ( numOfWorkers > 8 || numOfWorkers <= 0 ) {
+            numOfWorkers = 8;
+        }
+
         Dispatcher dispatcher = new Dispatcher(numOfWorkers);
         ArrayList<Job> jobList = dispatcher.getJobList();
 
@@ -39,7 +53,7 @@ public class MessageController {
         for ( int i = 0; i < numOfWorkers; i++ ) {
             int finalI = i;
             works[i] = CompletableFuture.supplyAsync(() ->
-                    sendRequestToWorker(jobList.get(finalI), ips.get(finalI), message.getMD5Password())
+                    sendRequestToWorker(jobList.get(finalI), ips.get(finalI), MD5)
             );
         }
 
@@ -49,25 +63,33 @@ public class MessageController {
         String password = (String) response.get();
 
         // TODO: if it returns a "", we have to wait another request.
-        if ( password.length() == 0 ) {
+        if ( password == null || password.length() == 0 ) {
 
-            //if ( verbose.equals("1") ) {
-                System.out.println("Waiting for join...");
-            //}
+            System.out.println("Waiting for join...");
 
             CompletableFuture.allOf(works).join();
             for ( int i = 0; i < numOfWorkers; i++ ) {
                 String result = (String)works[i].get();
-                if (result.length() > 0) {
+                if ( result != null && result.length() > 0) {
+                    System.out.println("allOf");
                     password = result;
                     break;
                 }
             }
         }
 
-        //if ( verbose.equals("1") ) {
-            System.out.println("Returning password: " + password);
-        //}
+        System.out.println("Returning password: " + password);
+
+        if (notebook.size() > Cache.getInstance().getMAX_SIZE() ) {
+            String removeEntry = null;
+            for ( String key : notebook.keySet() ) {
+                removeEntry = key;
+                break;
+            }
+            notebook.remove(removeEntry);
+        }
+
+        notebook.put(MD5, password);
 
         return password;
     }
@@ -88,9 +110,8 @@ public class MessageController {
 
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(map, headers);
 
-        //if ( verbose.equals("1") ) {
-            System.out.println("Send request to worker." + map.toString());
-        //}
+
+        System.out.println("Send request to worker." + map.toString());
 
         ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 

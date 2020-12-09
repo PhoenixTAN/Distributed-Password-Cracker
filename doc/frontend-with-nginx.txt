@@ -25,6 +25,9 @@ http{
     }
 }
 
+# cp your file to /var/www/html
+sudo cp -r ./reactapp/* /var/www/html
+
 # configuration file syntax
 sudo nginx -t  
 

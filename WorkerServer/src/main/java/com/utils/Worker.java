@@ -4,7 +4,9 @@ package com.utils;
 import java.security.MessageDigest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.utils.Cache;
 
 /**
  * @Author: Jingzhou Xue
@@ -16,6 +18,10 @@ public class Worker {
     private final int LENGTH_OF_PASSWORD = 5;
 
 
+    private static ConcurrentHashMap<String, String> notebook;
+    public Worker() {
+        notebook = Cache.getInstance().getNoteBook();
+    }
     /**
      * @description:
      *      Brute force to get the password.
@@ -34,7 +40,13 @@ public class Worker {
 
         try {
             while(!start.equals(end)) {
-                if (encrypt(start).equals(md5)) {
+
+                String currentMD5 = encrypt(start);
+                if (notebook.size() < Cache.getInstance().getMAX_SIZE()) {
+                    notebook.put(currentMD5.toUpperCase(), start);
+                }
+
+                if (currentMD5.equals(md5)) {
                     return start;
                 }
                 start = increment(start, 1);
@@ -75,7 +87,7 @@ public class Worker {
             int charIdx = LENGTH_OF_PASSWORD - 1 - i;
             position += Math.pow(BASE, i) * (ALL_CHARS.indexOf(s.charAt(charIdx)));
         }
-
+        // map.put("md5", "password");
         position += step;
 
         for (int i = 0; i < s.length(); i++) {

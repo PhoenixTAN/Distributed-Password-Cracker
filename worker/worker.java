@@ -95,7 +95,7 @@ public class Worker {
     }
 
     public static void main(String[] args) {
-        Date day = new Date();
+
         Worker worker = new Worker();
         String start = null;
         String end = null;

@@ -6,11 +6,11 @@ import Alert from "../Alert/Alert";
 import Axios from "axios";
 
 const Cracker = () => {
-  const MAX_NUM_OF_WORKERS = 5;
-  // const DEFAULT_NUM_OF_WORKERS = 3;
+  const MAX_NUM_OF_WORKERS = 8;
+  
   const PASSWORD_LENGTH = 5;
   const MD5_LENGTH = 32;
-  const MANAGEMENT_SERVER_URL = "http://localhost:8080/feed/post";
+  const MANAGEMENT_SERVER_URL = "http://192.86.139.65:8080/getPassword";
   const REQUEST_DELAY = 1500; // ms
   const REQUEST_TIMEOUT = 10000; // ms
 
@@ -162,7 +162,7 @@ const Cracker = () => {
       .then((res) => {
         console.log(res);
         setStatus("receive correct password");
-        setCorrectPassword("TODO");
+        setCorrectPassword(res.data);
         clearTimeout(requestTimeout);
         setTimeout(() => {
           setDisableCracker(false);
