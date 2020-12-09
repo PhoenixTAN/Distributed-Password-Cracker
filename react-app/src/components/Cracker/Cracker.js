@@ -7,7 +7,8 @@ import Axios from "axios";
 
 const Cracker = () => {
   const MAX_NUM_OF_WORKERS = 8;
-  
+  const DEFAULT_NUM_OF_WORKERS = 8;
+
   const PASSWORD_LENGTH = 5;
   const MD5_LENGTH = 32;
   const MANAGEMENT_SERVER_URL = "http://192.86.139.65:8080/getPassword";
@@ -112,7 +113,14 @@ const Cracker = () => {
 
     if (numOfWorkers > MAX_NUM_OF_WORKERS) {
       setNumOfWorkersTips(
-        "Warning! Max number of workers is " + PASSWORD_LENGTH + "."
+        "Warning! Max number of workers is " + MAX_NUM_OF_WORKERS + "."
+      );
+      return;
+    }
+
+    if (numOfWorkers !== DEFAULT_NUM_OF_WORKERS) {
+      setNumOfWorkersTips(
+        "Warning! We strongly suggest using " + DEFAULT_NUM_OF_WORKERS + " workers."
       );
       return;
     }
@@ -155,7 +163,7 @@ const Cracker = () => {
     
     const body = {
       MD5Password: md5Ref.current.value,
-      workerNum: numOfWorkersRef.current.value,
+      workerNum: DEFAULT_NUM_OF_WORKERS,
     };
     console.log(body);
     Axios.post(MANAGEMENT_SERVER_URL, body)
@@ -205,8 +213,6 @@ const Cracker = () => {
             ref={numOfWorkersRef}
             onChange={(event) => numOfWorkersOnChange(event)}
             spellCheck="false"
-            readonly
-            value={MAX_NUM_OF_WORKERS}
           />
           <div className="tips">{numOfWorkersTips}</div>
         </div>

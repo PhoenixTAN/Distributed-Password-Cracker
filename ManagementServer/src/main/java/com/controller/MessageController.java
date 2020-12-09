@@ -57,25 +57,39 @@ public class MessageController {
             );
         }
 
-        // if one request is completed, we get the result
-        // we don't have to wait other async request finished.
-        CompletableFuture<Object> response = CompletableFuture.anyOf(works);
-        String password = (String) response.get();
+        String password = null;
 
-        // TODO: if it returns a "", we have to wait another request.
-        if ( password == null || password.length() == 0 ) {
+        try {
 
-            System.out.println("Waiting for join...");
+            CompletableFuture<Object> response = CompletableFuture.anyOf(works);
+            password = (String) response.get();
 
-            CompletableFuture.allOf(works).join();
-            for ( int i = 0; i < numOfWorkers; i++ ) {
-                String result = (String)works[i].get();
-                if ( result != null && result.length() > 0) {
-                    System.out.println("allOf");
-                    password = result;
-                    break;
+            if ( password == null || password.length() == 0 ) {
+
+                System.out.println("Waiting for join...");
+                // print the status of works
+                for( int i = 0; i < works.length; i++ ) {
+                    System.out.println(works[i]);
+                }
+
+                CompletableFuture.allOf(works).join();
+
+                for( int i = 0; i < works.length; i++ ) {
+                    System.out.println(works[i]);
+                }
+                for ( int i = 0; i < numOfWorkers; i++ ) {
+                    String result = (String) works[i].get();
+                    if ( result != null && result.length() > 0) {
+                        System.out.println("allOf");
+                        password = result;
+                        break;
+                    }
                 }
             }
+        }
+        catch(Exception exception) {
+            System.out.println(exception);
+            return exception.toString();
         }
 
         System.out.println("Returning password: " + password);
