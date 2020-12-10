@@ -15,7 +15,7 @@ public class Cache {
         return notebook;
     }
 
-    private final int MAX_SIZE = 300000;
+    private final int MAX_SIZE = 100000;
 
     public int getMAX_SIZE() {
         return MAX_SIZE;
